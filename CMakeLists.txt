@@ -45,11 +45,19 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    applications/plotter_task.cpp
+    sp_middleware/io/plotter/plotter.cpp
+
+    applications/can_task.cpp # <- 添加这一行
+    sp_middleware/io/can/can.cpp # <- 添加这一行
+    sp_middleware/motor/rm_motor/rm_motor.cpp # <- 添加这一行
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    applications/
+    sp_middleware/
 )
 
 # Add project symbols (macros)
