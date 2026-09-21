@@ -7,6 +7,7 @@ sp::RM_Motor motor6020(1, sp::RM_Motors::GM6020);  // 一个电机ID为1, 电流
 
 extern "C" void can_task()
 {
+  osDelay(500);
   can1.config();
   can1.start();
 
