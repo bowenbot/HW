@@ -48,8 +48,14 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osThreadId PlotterTaskHandle;
 osThreadId CanTaskHandle;
+osThreadId buzzertaskHandle;
+osThreadId ledtaskHandle;
+osThreadId plottertaskHandle;
+osThreadId cantaskHandle;
+osThreadId imutaskHandle;
+osThreadId gimbaltaskHandle;
+osThreadId uarttaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -57,8 +63,13 @@ osThreadId CanTaskHandle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-extern void plotter_task(void const * argument);
 extern void can_task(void const * argument);
+extern void buzzer_task(void const * argument);
+extern void led_task(void const * argument);
+extern void plotter_task(void const * argument);
+extern void imu_task(void const * argument);
+extern void gimbal_task(void const * argument);
+extern void uart_task(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -110,13 +121,37 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* definition and creation of PlotterTask */
-  osThreadDef(PlotterTask, plotter_task, osPriorityLow, 0, 128);
-  PlotterTaskHandle = osThreadCreate(osThread(PlotterTask), NULL);
-
   /* definition and creation of CanTask */
   osThreadDef(CanTask, can_task, osPriorityLow, 0, 256);
   CanTaskHandle = osThreadCreate(osThread(CanTask), NULL);
+
+  /* definition and creation of buzzertask */
+  osThreadDef(buzzertask, buzzer_task, osPriorityNormal, 0, 128);
+  buzzertaskHandle = osThreadCreate(osThread(buzzertask), NULL);
+
+  /* definition and creation of ledtask */
+  osThreadDef(ledtask, led_task, osPriorityNormal, 0, 128);
+  ledtaskHandle = osThreadCreate(osThread(ledtask), NULL);
+
+  /* definition and creation of plottertask */
+  osThreadDef(plottertask, plotter_task, osPriorityLow, 0, 256);
+  plottertaskHandle = osThreadCreate(osThread(plottertask), NULL);
+
+  /* definition and creation of cantask */
+  osThreadDef(cantask, can_task, osPriorityHigh, 0, 128);
+  cantaskHandle = osThreadCreate(osThread(cantask), NULL);
+
+  /* definition and creation of imutask */
+  osThreadDef(imutask, imu_task, osPriorityRealtime, 0, 256);
+  imutaskHandle = osThreadCreate(osThread(imutask), NULL);
+
+  /* definition and creation of gimbaltask */
+  osThreadDef(gimbaltask, gimbal_task, osPriorityHigh, 0, 256);
+  gimbaltaskHandle = osThreadCreate(osThread(gimbaltask), NULL);
+
+  /* definition and creation of uarttask */
+  osThreadDef(uarttask, uart_task, osPriorityHigh, 0, 128);
+  uarttaskHandle = osThreadCreate(osThread(uarttask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

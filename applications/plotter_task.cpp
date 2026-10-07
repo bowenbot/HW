@@ -1,18 +1,15 @@
 #include "cmsis_os.h"
 #include "io/plotter/plotter.hpp"
-#include "motor/rm_motor/rm_motor.hpp"
+#include "tools/mahony/mahony.hpp"
 
-extern sp::RM_Motor motor6020;
+extern sp::Mahony imu;
 
 sp::Plotter plotter(&huart1);
 
 extern "C" void plotter_task()
 {
   while (1) {
-    plotter.plot(
-      1.0f
-      // motor6020.speed
-    );
-    osDelay(1);
+    plotter.plot(imu.yaw, imu.pitch, imu.roll);
+    osDelay(10);
   }
 }
